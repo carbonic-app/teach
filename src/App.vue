@@ -28,33 +28,65 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
+        @click="createUser"
         text
       >
-        <span class="mr-2">Latest Release</span>
+        <span class="mr-2">Create Account</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-content>
-      <HelloWorld/>
-    </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import {
+  AccountServiceClient,
+  CreateRequest
+} from "./account_service_grpc_web_pb";
 
 export default {
   name: 'App',
 
-  components: {
-    HelloWorld,
-  },
+  components: {},
 
   data: () => ({
-    //
+    users: []
   }),
+
+  created: function() {
+    this.client = new AccountServiceClient("http://localhost:8080", null, null);
+    // this.getUsers();
+  },
+
+  methods: {
+    // getUsers: function() {
+    //   // NOT IMPLEMENTED IN BACKEND YET
+
+    //   // Set up stream
+    //   let req = new GetUsersRequest();
+    //   this.client.getUsers(req, {}, (err, res) => {
+    //     this.users = res.toObject().userList;
+    //     console.log(this.users);
+    //   })
+
+    //   // Receive data
+    //   let stream = this.client.getUsers(req, {}, {});
+    //   stream.on('data', (res) => {
+    //     this.users.push(res.getUser());
+    //   });
+    // },
+
+    createUser: function() {
+      let req = new CreateRequest;
+      // Hardcoded for testing
+      req.setUsername("gg");
+      req.setPassword("pw")
+      this.client.create(req, {}, (err, res) => {
+        // eslint-disable-next-line no-console
+        console.log(err, res);
+      });
+    }
+  }
 };
 </script>
