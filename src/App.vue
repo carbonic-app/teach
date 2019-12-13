@@ -36,19 +36,21 @@
       </v-btn>
     </v-app-bar>
 
+    <vuetify-toast/>
+
   </v-app>
 </template>
 
 <script>
-import {
-  AccountServiceClient,
-  CreateRequest
-} from "./account_service_grpc_web_pb";
+import { AccountServiceClient, CreateRequest } from "./account_service_grpc_web_pb";
+import VuetifyToast from './components/toast'; // https://github.com/eolant/vuetify-toast-snackbar
 
 export default {
   name: 'App',
 
-  components: {},
+  components: {
+    VuetifyToast
+  },
 
   data: () => ({
     users: []
@@ -80,11 +82,18 @@ export default {
     createUser: function() {
       let req = new CreateRequest;
       // Hardcoded for testing
-      req.setUsername("gg");
-      req.setPassword("pw")
-      this.client.create(req, {}, (err, res) => {
-        // eslint-disable-next-line no-console
-        console.log(err, res);
+      let username = 'gg';
+      let pw = 'pw';
+      req.setUsername(username);
+      req.setPassword(pw);
+      this.client.create(req, {}, (err) => {
+        if (!err) {
+          this.$toast.success('Created user:' + username, {queueable: true});
+        } else {
+          this.$toast.error('Error code ' + err.code + ' when creating user: ' + err.message);
+          // eslint-disable-next-line no-console
+          console.log(err);
+        }
       });
     }
   }
