@@ -14,6 +14,7 @@
     "core-js": "^3.4.3",
     "google-protobuf": "^3.11.1",
     "grpc-web": "^1.0.7",
+    "material-design-icons-iconfont": "^5.0.1",
     "vue": "^2.6.10",
     "vuetify": "^2.1.0"
   },
