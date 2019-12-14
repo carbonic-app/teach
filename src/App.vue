@@ -57,7 +57,12 @@ export default {
   }),
 
   created: function() {
-    this.client = new AccountServiceClient("http://localhost:8080", null, null);
+    this.client = new AccountServiceClient("http://localhost:10000", null, null);
+    //   'format': 'text',
+    //   'suppressCorsPreflight': true
+    // });
+    // eslint-disable-next-line no-console
+    console.log(this.client);
     // this.getUsers();
   },
 
@@ -86,9 +91,9 @@ export default {
       let pw = 'pw';
       req.setUsername(username);
       req.setPassword(pw);
-      this.client.create(req, {}, (err) => {
+      this.client.create(req, {}, (err, res) => {
         if (!err) {
-          this.$toast.success('Created user:' + username, {queueable: true});
+          this.$toast.success('Created user. Token: ' + res, {queueable: true});
         } else {
           this.$toast.error('Error code ' + err.code + ' when creating user: ' + err.message);
           // eslint-disable-next-line no-console
