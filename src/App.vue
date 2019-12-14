@@ -6,38 +6,79 @@
       dark
     >
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        Carbonic
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        @click="createUser"
-        text
-      >
-        <span class="mr-2">Create Account</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-tooltip left>
+        <template v-slot:activator="{ on }">
+          <v-btn icon large
+            href="https://github.com/carbonic-app"
+            target="_blank" v-on="on"
+          >
+            <v-icon>mdi-github-circle</v-icon>
+          </v-btn>
+        </template>
+        <span>Source</span>
+      </v-tooltip>
     </v-app-bar>
 
-    <vuetify-toast/>
 
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <v-col
+            cols="12"
+            sm="8"
+            md="4"
+          >
+            <v-card class="elevation-12">
+              <v-toolbar
+                color="primary"
+                dark
+                flat
+              >
+                <v-toolbar-title>Register for Carbonic</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field v-model="username"
+                    label="Username"
+                    name="username"
+                    prepend-icon="person"
+                    type="text"
+                  />
+
+                  <v-text-field
+                    id="password"
+                    label="Password"
+                    name="password"
+                    prepend-icon="lock"
+                    type="password"
+                  />
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn @click="createUser" color="primary">Create account</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-col class="text-center">
+          <v-btn>List Users</v-btn>
+        </v-col>
+      </v-container>
+    </v-content>
+
+    <vuetify-toast/>
   </v-app>
 </template>
 
@@ -53,7 +94,9 @@ export default {
   },
 
   data: () => ({
-    users: []
+    users: [],
+    username: '',
+    password: ''
   }),
 
   created: function() {
@@ -85,10 +128,8 @@ export default {
     createUser: function() {
       let req = new CreateRequest;
       // Hardcoded for testing
-      let username = 'gg';
-      let pw = 'pw';
-      req.setUsername(username);
-      req.setPassword(pw);
+      req.setUsername(this.username);
+      req.setPassword(this.password);
       this.client.create(req, {}, (err, res) => {
         if (!err) {
           this.$toast.success('Created user. Token: ' + res, {queueable: true});
