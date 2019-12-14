@@ -57,10 +57,8 @@ export default {
   }),
 
   created: function() {
-    this.client = new AccountServiceClient("http://localhost:10000", null, null);
-    //   'format': 'text',
-    //   'suppressCorsPreflight': true
-    // });
+    this.$vuetify.theme.dark = true;
+    this.client = new AccountServiceClient("http://34.82.179.230", null, null);
     // eslint-disable-next-line no-console
     console.log(this.client);
     // this.getUsers();
